@@ -12,12 +12,14 @@ const server = http.createServer((req, res) => {
   req.on("end", () => {
     // Parse the body of the request as JSON if Content-Type header is
       // application/json
-    if (req.headers['content-type'] === "application/json") {
-      reqBody = JSON.stringify(reqBody);
+    // Using includes instead of strict equals checks if the data is that type, even if it includes extra data
+    // where strict equals does not
+    if (req.headers['content-type'].includes("application/json")) {
+      reqBody = JSON.parse(reqBody);
     }
     // Parse the body of the request as x-www-form-urlencoded if Content-Type
       // header is x-www-form-urlencoded
-    if (req.headers['content-type'] === "x-www-form-urlencoded") {
+    if (req.headers['content-type'].includes("application/x-www-form-urlencoded")) {
       reqBody = JSON.parse(reqBody);
     }
 
