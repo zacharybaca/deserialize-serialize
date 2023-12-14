@@ -14,16 +14,13 @@ const server = http.createServer((req, res) => {
       // application/json
     // Using includes instead of strict equals checks if the data is that type, even if it includes extra data
     // where strict equals does not
-    if (req.headers['content-type'].includes("application/json")) {
-      reqBody = JSON.parse(reqBody);
+    if (req.headers['content-type'] === "application/json") {
+      req.body = JSON.parse(reqBody);
     }
     // Parse the body of the request as x-www-form-urlencoded if Content-Type
       // header is x-www-form-urlencoded
-    if (req.headers['content-type'].includes("application/x-www-form-urlencoded")) {
-      reqBody = JSON.parse(reqBody);
-    }
-
-    if (reqBody) {
+    if (req.headers['content-type'] === "x-www-form-urlencoded") {
+      if (reqBody) {
       req.body = reqBody
         .split("&")
         .map((keyValuePair) => keyValuePair.split("="))
@@ -33,6 +30,9 @@ const server = http.createServer((req, res) => {
           acc[key] = value;
           return acc;
         }, {});
+    }
+
+
 
       // Log the body of the request to the terminal
       console.log(req.body);
