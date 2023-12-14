@@ -6,6 +6,7 @@ const server = http.createServer((req, res) => {
   let reqBody = "";
   req.on("data", (data) => {
     reqBody += data;
+    console.log('Body: ', data);
   });
 
   req.on("end", () => {
@@ -16,9 +17,8 @@ const server = http.createServer((req, res) => {
     }
     // Parse the body of the request as x-www-form-urlencoded if Content-Type
       // header is x-www-form-urlencoded
-    if (req.headers['content-type'] === "application/x-www-form-urlencoded") {
-      const decoded = decodeURIComponent(reqBody);
-      reqBody = JSON.parse(decoded);
+    if (req.headers['content-type'] === "x-www-form-urlencoded") {
+      reqBody = JSON.parse(reqBody);
     }
 
     if (reqBody) {
